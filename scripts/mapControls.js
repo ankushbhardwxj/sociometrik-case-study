@@ -37,8 +37,6 @@ export function addCurrentUserLocationBtn(map) {
     _clicked: function (e) {
       L.DomEvent.stopPropagation(e);
 
-      // this.removeLocate();
-
       this._checkLocate();
 
       return;
@@ -50,43 +48,28 @@ export function addCurrentUserLocationBtn(map) {
     _locateMap: function () {
       const locateActive = document.querySelector(".locate-button");
       const locate = locateActive.classList.contains("locate-active");
-      // add/remove class from locate button
       locateActive.classList[locate ? "remove" : "add"]("locate-active");
 
-      // remove class from button
-      // and stop watching location
       if (locate) {
         this.removeLocate();
         this._map.stopLocate();
         return;
       }
 
-      // location on found
       this._map.on("locationfound", this.onLocationFound, this);
-      // locataion on error
       this._map.on("locationerror", this.onLocationError, this);
-
-      // start locate
       this._map.locate({ setView: true, enableHighAccuracy: true });
     },
     onLocationFound: function (e) {
-      // add circle
       this.addCircle(e).addTo(this.featureGroup()).addTo(map);
-
-      // add marker
       this.addMarker(e).addTo(this.featureGroup()).addTo(map);
-
-      // add legend
     },
-    // on location error
     onLocationError: function (e) {
       this.addLegend("Location access denied.");
     },
-    // feature group
     featureGroup: function () {
       return new L.FeatureGroup();
     },
-    // add legend
     addLegend: function (text) {
       const checkIfDescriotnExist = document.querySelector(".description");
 
@@ -141,7 +124,6 @@ export function addCurrentUserLocationBtn(map) {
     },
   });
 
-  // adding new button to map controll
   map.addControl(new customControl());
 }
 
@@ -261,7 +243,6 @@ export function handleSearchDropdown(map) {
     });
   }
 
-  // function click on clear button
   function clickOnClearButton() {
     document.querySelector(".auto-clear").click();
   }
@@ -286,9 +267,6 @@ export function handleSearchDropdown(map) {
         currentValue
       )}`;
 
-      /**
-       * Promise
-       */
       return new Promise((resolve) => {
         fetch(api)
           .then((response) => response.json())
@@ -303,8 +281,6 @@ export function handleSearchDropdown(map) {
 
     onResults: ({ currentValue, matches, template }) => {
       const regex = new RegExp(currentValue, "i");
-      // checking if we have results if we don't
-      // take data from the noResults method
       return matches === 0
         ? template
         : matches
@@ -342,7 +318,6 @@ export function handleSearchDropdown(map) {
       L.DomUtil.addClass(marker._icon, "leaflet-marker-locate");
     },
 
-    // the method presents no results
     noResults: ({ currentValue, template }) =>
       template(`<li>No results found: "${currentValue}"</li>`),
   });
