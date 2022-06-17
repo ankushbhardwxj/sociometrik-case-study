@@ -1,0 +1,378 @@
+#map {
+  height: 98vh;
+}
+
+*,
+:after,
+:before {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body,
+html,
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  position: relative;
+  min-height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+  sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  padding: 0;
+  background-color: #f1f1f1;
+}
+
+.located-animation {
+  width: 17px;
+  height: 17px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  background: #2a93ee;
+  animation: border-pulse 2s infinite;
+}
+
+@keyframes border-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 1);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+  }
+}
+
+.leaflet-control-zoom {
+  top: 155px;
+}
+
+
+.locate-active {
+  fill: red;
+}
+
+.locate-button {
+  position: absolute;
+  top: 80px;
+  left: 10px;
+  width: 26px;
+  height: 26px;
+  z-index: 999;
+  cursor: pointer;
+  display: none;
+  padding: 5px;
+  background: #fff;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 1px 5px rgb(0 0 0 / 65%);
+}
+
+.leaflet-touch .locate-button {
+  width: 34px;
+  height: 34px;
+}
+
+.auto-search-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+  border: none;
+}
+
+.auto-search-wrapper input {
+  font-size: 16px;
+  width: 95%;
+  box-shadow: none;
+  box-sizing: border-box;
+  padding-right: 28px;
+  padding: 0;
+  outline: none;
+  border: none;
+}
+
+.auto-search-wrapper input:focus {
+  outline: none;
+  border: none;
+}
+
+.auto-search-wrapper input::-ms-clear {
+  display: none;
+  border: none;
+}
+
+.auto-search-wrapper ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+}
+
+.auto-search-wrapper ul li {
+  position: relative;
+  cursor: pointer;
+  margin: 0;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.auto-search-wrapper ul li:not(:last-child) {
+  border-top: none;
+}
+
+.auto-search-wrapper ul li[disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+  background: #ececec;
+}
+
+.auto-search-wrapper .auto-expanded {
+  outline: none;
+}
+
+.auto-search-wrapper.loupe:before {
+  filter: invert(60%);
+}
+
+.auto-is-loading:after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 0px;
+  bottom: 0;
+  margin: auto;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #808080;
+  border-left-color: #d9d9d9;
+  border-top-color: #d9d9d9;
+  animation: auto-spinner 0.6s linear infinite;
+}
+
+.auto-is-loading .auto-clear {
+  display: none;
+}
+
+@keyframes auto-spinner {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+li.loupe:before {
+  top: 15px;
+  bottom: auto;
+}
+
+.loupe input {
+}
+
+.loupe:before {
+  position: absolute;
+  content: "";
+  width: 17px;
+  height: 17px;
+  top: 0;
+  bottom: 0;
+  left: 10px;
+  margin: auto;
+  background-image: var(--loupe-icon);
+}
+
+.auto-selected:before {
+  opacity: 1;
+}
+
+.auto-clear {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  bottom: 0;
+  right: -20px;
+  margin: auto;
+  width: 40px;
+  height: auto;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+.auto-clear:before {
+  content: var(--close-button);
+  line-height: 100%;
+  height: 24px;
+  width: 24px;
+}
+
+.auto-clear span {
+  display: none;
+}
+
+.auto-results-wrapper {
+  display: none;
+  border-top: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.auto-results-wrapper ul > .loupe {
+  padding-left: 40px;
+}
+
+.auto-results-wrapper.auto-is-active {
+  display: block;
+  position: absolute;
+  width: 100%;
+  z-index: 99999;
+}
+
+.auto-selected {
+  background-color: #e6e6e6;
+}
+
+.auto-selected + li:before {
+  border-top: none;
+}
+
+.auto-error {
+  border: 1px solid #ff3838;
+}
+
+.auto-error::placeholder {
+  color: #ff6666;
+  opacity: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+.leaflet-search {
+  width: 17px;
+  height: 17px;
+}
+
+.leaflet-autocomplete {
+  background: #fff;
+  padding: 20px;
+  width: 28px;
+  height: 26px;
+  display: flex;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+  border-radius: 4px;
+  transition: width 200ms ease-in;
+}
+
+.leaflet-autocomplete svg {
+  position: absolute;
+  width: 17px;
+  left: 3px;
+}
+
+.leaflet-autocomplete .auto-search-wrapper {
+  display: none;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.leaflet-autocomplete .loupe:before {
+  left: 0;
+  top: 4px;
+  width: 15px;
+  background-repeat: no-repeat;
+}
+
+.leaflet-autocomplete .auto-search-wrapper ul li {
+  padding: 5px;
+  border-top: 1px solid rgb(240, 240, 240);
+  font-size: 14px;
+}
+
+.leaflet-autocomplete.active-autocomplete {
+  width: 350px;
+}
+
+.leaflet-autocomplete.active-autocomplete .auto-results-wrapper.auto-is-active {
+  margin-top: 9px;
+  border-top: 1px solid white; 
+  border-radius: 0 0 5px 5px;
+}
+
+.leaflet-autocomplete.active-autocomplete .auto-search-wrapper {
+  display: block;
+}
+
+.leaflet-touch .leaflet-autocomplete {
+  padding: 15px;
+}
+
+.leaflet-touch .leaflet-autocomplete svg {
+  width: 20px;
+  left: 5px;
+  top: 5px;
+}
+
+.description {
+  width: 250px;
+  font-size: 16px;
+  color: #333;
+  background-color: hsla(0, 0%, 100%, 0.8);
+  box-shadow: 0 0 15px rgb(0 0 0 / 20%);
+  border-radius: 5px;
+  line-height: 120%;
+  border: 1px solid grey;
+}
+
+.company-logo {
+  position: absolute;
+  top: -120px;
+  height: 50px;
+  width: 100px;
+}
+
+.legend {
+  background: #fff;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.legend .row {
+  display: flex;
+  line-height: 30px;
+}
+
+.legend i {
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+.timeseries1 {
+  height: 300px;
+  width: 400px;
+}
+
+.timeseries2 {
+  height: 300px;
+  width: 400px;
+}
